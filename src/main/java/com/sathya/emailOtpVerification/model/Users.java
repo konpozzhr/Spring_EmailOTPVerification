@@ -1,8 +1,7 @@
 package com.sathya.emailOtpVerification.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -14,10 +13,13 @@ import lombok.*;
 @Table(name = "USERS")
 public class Users {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     private String username;
     private String email;
     private String password;
+    private String otp;
     private boolean verified;
 
 

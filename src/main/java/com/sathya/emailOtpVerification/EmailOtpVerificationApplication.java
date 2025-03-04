@@ -13,3 +13,6 @@ public class EmailOtpVerificationApplication {
 }
 
 
+// Access the website
+//	http://localhost:8080/h2-console/login.jsp?jsessionid=2538650b2279cacb138d335b196ce8be
+

@@ -9,6 +9,8 @@ import com.sathya.emailOtpVerification.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Random;
+
 @Service
 @RequiredArgsConstructor
 
@@ -38,6 +40,13 @@ public class UserServiceImpl implements UserService {
 
         return response;
     }
+
+    private String generateOTP(){
+        Random random = new Random();
+        int otpValue = 100000 + random.nextInt(900000);
+        return String.valueOf(otpValue);
+    }
+
 }
 
 
