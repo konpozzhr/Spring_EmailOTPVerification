@@ -17,6 +17,7 @@ import java.util.Random;
 public class UserServiceImpl implements UserService {
 
     private final UsersRepository usersRepository;
+    private final EmailService emailService;
 
     @Override
     public RegisterResponse register(RegisterRequest registerRequest) {
@@ -31,7 +32,11 @@ public class UserServiceImpl implements UserService {
                 .password(registerRequest.getPassword())
                 .build();
 
-        usersRepository.save(users);
+        String otp = generateOTP();
+        users.setOtp(otp);
+
+        Users savedUser = usersRepository.save(users);
+        sendVerificationEmail(savedUser.getEmail(), otp);
 
         RegisterResponse response = RegisterResponse.builder()
                 .username(users.getUsername())
@@ -45,6 +50,13 @@ public class UserServiceImpl implements UserService {
         Random random = new Random();
         int otpValue = 100000 + random.nextInt(900000);
         return String.valueOf(otpValue);
+    }
+
+
+    private void sendVerificationEmail(String email, String otp){
+        String subject = "Email Verification SpringBoot Application";
+        String body = "Your verification OTP is : " + otp;
+        emailService.sendEmail(email, subject, body);
     }
 
 }
