@@ -46,6 +46,32 @@ public class UserServiceImpl implements UserService {
         return response;
     }
 
+    @Override
+    public void verify(String email, String otp) {
+        Users users = usersRepository.findByEmail(email);
+        if(users == null){
+            throw new RuntimeException("User not found");
+        }else if(users.isVerified()){
+            throw new RuntimeException("User already verified");
+        }else if(otp.equals(users.getOtp())){
+            users.setVerified(true);
+            usersRepository.save(users);
+        }else{
+            throw new RuntimeException("Internal Server Error");
+        }
+    }
+
+    @Override
+    public Users login(String email, String password) {
+        Users byEmail = usersRepository.findByEmail(email);
+        if(byEmail != null && byEmail.isVerified() && byEmail.getPassword().equals(password)){
+            return byEmail;
+        }else {
+            throw new RuntimeException("Internal Server Error");
+        }
+
+    }
+
     private String generateOTP(){
         Random random = new Random();
         int otpValue = 100000 + random.nextInt(900000);
